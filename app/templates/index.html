@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Covid-19 Diagnosis App</title>
+    <link rel="icon" type="image/x-icon" href="/static/assets/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet"
+        type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/static/css/styles.css" rel="stylesheet" />
+</head>
+
+
+
+<script>
+    function showloading() {
+        image = document.getElementById('loading_image');
+        image.style.display = 'inline'
+    }
+</script>
+
+<style>
+    .img_holder img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .btn-file {
+        position: relative;
+    }
+</style>
+
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-info" role="alert">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container" style="margin-top: 20px;">
+            <div><a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#Prediction"
+                    style="margin-top: 0px; text-align: left;color:black;">Try the app now</a></div>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto"> <a class="navbar-brand js-scroll-trigger"
+                        href="#page-top"></a><button class="navbar-toggler navbar-toggler-left" type="button"
+                        data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+                        aria-expanded="false" aria-label="Toggle navigation">Menu<i
+                            class="fas fa-bars ml-1"></i></button>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger"
+                            href="https://drive.google.com/file/d/1B6YRII1Bw3BUFSApInGmiDrJugYjJ_-F/preview">documentation</a>
+                    </li>
+                    {% if current_user.is_anonymous %}
+                    <!-- <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{url_for('login')}}">Login</a> -->
+                    </li>
+                    <!-- <li class="nav-item"><a class="nav-link js-scroll-trigger" -->
+                    <!-- href="{{url_for('register')}}">Register</a></li> -->
+                    {% else %}
+                    # 用户名 下拉选取框
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">{{current_user.username}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="height: 80px; margin-left: -50px;">
+                            <li style="text-align: center; margin-top: 5px;"><a
+                                    href="{{url_for('history',id = current_user.id)}}" style="height: 40px;">History</a>
+                            </li>
+                            <li style="text-align: center; margin-top: 10px; "><a
+                                    href="{{url_for('logout')}}">Logout</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Masthead-->
+    <header class="masthead" style="zoom: 100%;margin-top: -15px;">
+
+        <div class="container">
+            {% if current_user.is_anonymous%}
+            <div class="masthead-subheading" style="position: relative; top: -80px;">Welcome To Our AI Botnet Detection
+                tool
+            </div>
+            {% else %}
+            <div class="masthead-subheading" style="position: relative; top: -40px;">Welcome back,
+                {{current_user.username}}</div>
+            {% endif %}
+            <div class="masthead-heading text-uppercase" style="position: relative; top: -40px;">Detect Botnet Devices
+                with only one click</div>
+            <div><a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#portfolio"
+                    style="top: 0px; color:black;">Learn More</a></div>
+        </div>
+    </header>
+
+    <!-- Portfolio Grid-->
+    <section class="page-section bg-light" id="portfolio">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Gallery</h2>
+                <h3 class="section-subheading text-muted" style="font-size: large;">Pixel images for both normal flows
+                    and botnet flows</h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid"
+                                src="/static/assets/img/portfolio/0UDP 192.168.0.1310684  13.228.233.326000.png"
+                                alt="" />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Normal flow</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid"
+                                src="/static/assets/img/portfolio/0UDP 192.168.0.1314942  163.50.175.13539426.png"
+                                alt="" />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Normal flow</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-toggle="modal" href="#portfolioModal3">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid"
+                                src="/static/assets/img/portfolio/0UDP 192.168.0.1355242  239.255.255.2501900.png"
+                                alt="" />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Normal flow</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-toggle="modal" href="#portfolioModal4">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid"
+                                src="/static/assets/img/portfolio/1UDP 192.168.0.2460156  210.89.164.908899.png"
+                                alt="" />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Botnet flow</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-toggle="modal" href="#portfolioModal5">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid"
+                                src="/static/assets/img/portfolio/1UDP 192.168.0.2460187  210.89.164.908899.png"
+                                alt="" />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Botnet flow</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-toggle="modal" href="#portfolioModal6">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid"
+                                src="/static/assets/img/portfolio/3TCP 192.168.0.2411466  192.168.0.1323.png"
+                                alt="" />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Botnet flow</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About-->
+    <section class="page-section" id="about">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">How we made it</h2>
+                <h3 class="section-subheading text-muted">Progress of development</h3>
+            </div>
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-image"><img class="rounded-circle img-fluid"
+                            src="/static/assets/img/about/1.jpg" alt="" /></div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Stage One</h4>
+                            <h5 class="subheading">Sourcing Datasets</h5>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">Collected up to 200,000 packets containing Mirai botent packets and
+                                normal ones.
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-image"><img class="rounded-circle img-fluid"
+                            src="/static/assets/img/about/2.jpg" alt="" /></div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Stage Two</h4>
+                            <h5 class="subheading">Data Cleaning</h5>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">Preprocessed packets to pixel images so they are
+                                suitable for training on deep-learning models.</p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-image"><img class="rounded-circle img-fluid"
+                            src="/static/assets/img/about/3.jpg" alt="" /></div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Stage Three</h4>
+                            <h5 class="subheading">Training models and Evaluations</h5>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">Built, customized and tested dozens of deep learning
+                                models and discovered the best architectures for Botnet traffic detection. </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-image"><img class="rounded-circle img-fluid"
+                            src="/static/assets/img/about/4.jpg" alt="" /></div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Stage Four</h4>
+                            <h5 class="subheading">Web App Development</h5>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">Developed easy-to-use web interface so that you can enjoy fast
+                                and accurate prediction using our App.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-image">
+                        <h4 style="color:black;">Final<br />COVID<br />App!</h4>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+
+
+    <section class="page-section" id="Prediction">
+
+
+        <h1 style="margin: auto;width: 80%; text-align: center; margin-top: 20px;  text-transform: uppercase">Botnet
+            Detector</h1>
+
+        <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+            <img style="max-width: 1000px; max-height: 1000px;" src="{{ url_for('static', filename='botnet.png') }}" />
+        </div>
+
+        <form action="/upload" method="post" enctype="multipart/form-data"
+            style="margin-top: 30px; width: 100%; text-align: center; margin: auto;" onsubmit="showloading()">
+
+            <span class="btn btn-primary" style="color: black; text-align: center;">
+                <input type="file" name="pcap">
+            </span><br><br>
+            <input type="submit" style="margin-top: 20px; color:black;" value="Upload Now"
+                class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">
+            <div><a class="btn btn-primary"
+                    href="https://github.com/WeatherSuperMan/Covid_Test_Images/archive/master.zip"
+                    style="margin-top: 20px; text-align: left;color:black;">Download Sample Images</a></div>
+
+        </form>
+
+
+
+
+
+        <div style="text-align: center">
+            <img id="loading_image" style="display: none" src="{{ url_for('static', filename='loading.gif')}}">
+        </div>
+
+    </section>
+
+
+
+    <!-- Team-->
+    <section class="page-section bg-light" id="team">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-lg-4">
+                    <div class="team-member">
+                        <img class="mx-auto rounded-circle" src="/static/assets/img/team/luyao.jpg" alt="" />
+                        <h4>Bull shit</h4>
+                        <h6 style="margin-top: 10px; color:black;">Designer</h6>
+                        <p>13300823@student.uts.edu.au</p>
+                    </div>
+                </div> -->
+
+            <!-- 
+                <div class="col-lg-4">
+                    <div class="team-member">
+                        <img class="mx-auto rounded-circle" src="/static/assets/img/team/john.jpg" alt="" />
+                        <h4>Johnny Wu</h4>
+                        <h6 style="margin-top: 10px; color:black;">Fullstack Developer</h6>
+                        <p>13658695@student.uts.edu.au</p>
+                    </div>
+                </div> -->
+
+            <div class="col-lg-4">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="/static/assets/img/team/ma.jpg" alt="" />
+                    <h4>Zuhui Ma</h4>
+                    <h6 style="margin-top: 10px; color:black;">Full Stack Developer</h6>
+                    <p>13404658@student.uts.edu.au</p>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </section>
+    <!-- Clients-->
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 my-3">
+                    <a href="https://www.tensorflow.org/"><img class="img-fluid d-block mx-auto"
+                            src="/static/assets/img/logos/logo_1.jpg" alt="" /></a>
+                </div>
+                <div class="col-md-3 col-sm-6 my-3">
+                    <a href="https://flask.palletsprojects.com/en/1.1.x/"><img class="img-fluid d-block mx-auto"
+                            src="/static/assets/img/logos/logo_2.jpg" alt="" /></a>
+                </div>
+                <div class="col-md-3 col-sm-6 my-3">
+                    <a href="https://www.uts.edu.au/"><img class="img-fluid d-block mx-auto"
+                            src="/static/assets/img/logos/logo_3.jpg" alt="" /></a>
+                </div>
+                <div class="col-md-3 col-sm-6 my-3">
+                    <a href="https://colab.research.google.com/"><img class="img-fluid d-block mx-auto"
+                            src="/static/assets/img/logos/logo_4.jpg" alt="" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer-->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-left">Copyright © AI Dreamers 2020</div>
+            </div>
+        </div>
+    </footer>
+    <!-- Portfolio Modals-->
+    <!-- Flow 1 (Normal) -->
+    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal"><img src="/static/assets/img/close-icon.svg"
+                        alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here-->
+                                <h2 class="text-uppercase">Normal flow</h2>
+                                <!-- <p class="item-intro text-muted">50-year-old Female Patient</p> -->
+                                <img class="img-fluid d-block mx-auto"
+                                    src="/static/assets/img/portfolio/0UDP 192.168.0.1310684  13.228.233.326000.png"
+                                    alt="" />
+                                <p> Protocol: UDP</p>
+                                <p> Source IP: 192.168.0.13</p>
+                                <p> Source Port: 10684</p>
+                                <p> Destination IP: 13.228.233.32</p>
+                                <p> Destination Port: 6000</p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button"><i
+                                        class="fas fa-times mr-1"></i>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal 2-->
+    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal"><img src="/static/assets/img/close-icon.svg"
+                        alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here-->
+                                <h2 class="text-uppercase">Normal flow</h2>
+                                <img class="img-fluid d-block mx-auto"
+                                    src="/static/assets/img/portfolio/0UDP 192.168.0.1314942  163.50.175.13539426.png"
+                                    alt="" />
+                                <p> Protocol: UDP</p>
+                                <p> Source IP: 192.168.0.13</p>
+                                <p> Source Port: 14942</p>
+                                <p> Destination IP: 163.50.175.135</p>
+                                <p> Destination Port: 39426</p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button"><i
+                                        class="fas fa-times mr-1"></i>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal 3-->
+    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal"><img src="/static/assets/img/close-icon.svg"
+                        alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here-->
+                                <h2 class="text-uppercase">Normal flow</h2>
+                                <img class="img-fluid d-block mx-auto"
+                                    src="/static/assets/img/portfolio/0UDP 192.168.0.1355242  239.255.255.2501900.png"
+                                    alt="" />
+                                <p> Protocol: UDP</p>
+                                <p> Source IP: 192.168.0.13</p>
+                                <p> Source Port: 55242</p>
+                                <p> Destination IP: 239.255.255.250</p>
+                                <p> Destination Port: 1900</p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button"><i
+                                        class="fas fa-times mr-1"></i>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal 4-->
+    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal"><img src="/static/assets/img/close-icon.svg"
+                        alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here-->
+                                <h2 class="text-uppercase">Botnet flow</h2>
+                                <img class="img-fluid d-block mx-auto"
+                                    src="/static/assets/img/portfolio/1UDP 192.168.0.2460156  210.89.164.908899.png"
+                                    alt="" />
+                                <p> Protocol: UDP</p>
+                                <p> Attack Type: flooding attack</p>
+                                <p> Source IP: 192.168.0.24</p>
+                                <p> Source Port: 60156</p>
+                                <p> Destination IP: 210.89.164.90</p>
+                                <p> Destination Port: 8899</p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button"><i
+                                        class="fas fa-times mr-1"></i>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal 5-->
+    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal"><img src="/static/assets/img/close-icon.svg"
+                        alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here-->
+                                <h2 class="text-uppercase">Botnet flow</h2>
+                                <img class="img-fluid d-block mx-auto"
+                                    src="/static/assets/img/portfolio/1UDP 192.168.0.2460187  210.89.164.908899.png"
+                                    alt="" />
+                                <p> Protocol: UDP</p>
+                                <p> Attack Type: flooding attack</p>
+                                <p> Source IP: 192.168.0.24</p>
+                                <p> Source Port: 60187</p>
+                                <p> Destination IP: 210.89.164.90</p>
+                                <p> Destination Port: 8899</p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button"><i
+                                        class="fas fa-times mr-1"></i>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal 6-->
+    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal"><img src="/static/assets/img/close-icon.svg"
+                        alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here-->
+                                <h2 class="text-uppercase">Botnet flow</h2>
+                                <img class="img-fluid d-block mx-auto"
+                                    src="/static/assets/img/portfolio/3TCP 192.168.0.2411466  192.168.0.1323.png"
+                                    alt="" />
+                                <p> Protocol: TCP</p>
+                                <p> Attack Type: telnet bruteforce</p>
+                                <p> Source IP: 192.168.0.24</p>
+                                <p> Source Port: 11466</p>
+                                <p> Destination IP: 192.168.0.13</p>
+                                <p> Destination Port: 23</p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button"><i
+                                        class="fas fa-times mr-1"></i>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Third party plugin JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <!-- Contact form JS-->
+    <script src="/static/assets/mail/jqBootstrapValidation.js"></script>
+    <script src="/static/assets/mail/contact_me.js"></script>
+    <!-- Core theme JS-->
+    <script src="/static/js/scripts.js"></script>
+</body>
+
+</html>
