@@ -26,7 +26,7 @@
     function showloading() {
         image = document.getElementById('loading_image');
         image.style.display = 'inline'
-        
+
     }
 </script>
 
@@ -34,7 +34,7 @@
     body {
         background-image: url("/static/assets/img/predict_bg.jpg");
         background-repeat: no-repeat;
-        background-size:auto;
+        background-size: auto;
     }
 
 
@@ -101,24 +101,33 @@
         <div>
             <h2
                 style="margin: auto;width: 80%; text-align: center; margin-top: 50px; color: white; text-transform: uppercase">
-                COVID-19 Classification</h2>
+                Botnet Classification</h2>
             <div style="width: 90%; margin: auto; text-align: center">
-                <img src="{{ url_for('send_file', filename=image_file_name)}}"
-                    style="max-width: 500px; max-height: 450px; margin-top: 30px; margin-bottom: 10px">
-                <p style="font-style: italic">{{ image_file_name }}</p>
+                <p style="font-style: italic">{{ file_name }}</p>
 
-                <h3 style="margin-top: 40px; color: white;"><b>Diagnosis: <span
-                            style="color: rgb(0, 214, 0)">{{ label }}</span></b></h3>
-                <h3 style="color: white;"><b>COVID-19 Likelihood : <span style="color: rgb(0, 214, 0);">{{ accuracy }}
+                <h3 style="margin-top: 40px; color: white;"><b>Number of Botnet Flows: <span
+                            style="color: rgb(0, 214, 0)">{{ bot_num }}</span></b></h3>
+                <h3 style="color: white;"><b>Number of all flows: <span style="color: rgb(0, 214, 0);">{{ tol_num }}
+                            %</span></b></h3>
+                <h3 style="color: white;"><b>Percentage of Botnet Flows: <span
+                            style="color: rgb(0, 214, 0);">{{ bot_per }}
                             %</span></b></h3>
 
                 <br>
                 <br>
+                <form action="/download" method="get" enctype="multipart/form-data"
+                    style="margin-top: 30px; width: 100%; text-align: center; margin: auto;" onsubmit="showloading()">
+                    <span class="btn btn-primary" style="color: black; text-align: center;">
+                        <input type="file" name="pcap">
+                    </span><br><br>
+                    <input type="submit" style="margin-top: 20px; color:black;" value="Upload Now"
+                        class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">
+                </form>
 
                 <form action="/upload" method="post" enctype="multipart/form-data"
                     style="margin-top: 30px; width: 100%; text-align: center; margin: auto;" onsubmit="showloading()">
                     <span class="btn btn-primary" style="color: black; text-align: center;">
-                        <input type="file" name="image">
+                        <input type="file" name="pcap">
                     </span><br><br>
                     <input type="submit" style="margin-top: 20px; color:black;" value="Upload Now"
                         class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">

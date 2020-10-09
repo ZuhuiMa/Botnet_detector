@@ -9,5 +9,6 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'uploads'
     STATIC_FOLDER = 'static'
+    DOWNLOAD_FOLDER = 'downloads'
     POSTS_PER_PAGE = 10
 
