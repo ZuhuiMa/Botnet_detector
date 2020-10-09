@@ -147,24 +147,26 @@ def upload_file():
                     bot_num += 1
                 else:
                     predictions.append(1)
-            bot_per = round(bot_num/tol_num, 2)
-            file_names = [file for file in os.listdir(folder_name)]
+            bot_per = round(bot_num/tol_num*100, 5)
+            file_names = [file.split(".")[0] for file in os.listdir(folder_name)]
             result = pd.DataFrame(
                 {'session_infomation': file_names, 'is_botnet': predictions})
             save_path = os.path.join(
                 DOWNLOAD_FOLDER, file.filename.split(".")[0])
-            result.to_csv(save_path, index=False)
+            result.to_csv(save_path+".csv", index=False)
+            shutil.rmtree(folder_name)
+            os.remove(full_name)
     return render_template('predict.html', file_name=file.filename, bot_num=bot_num, tol_num=tol_num, bot_per=bot_per)
 
 
-@app.route("/download", methods=['GET'])
-def download_file(filename):
+@app.route('/download', methods=['POST', 'GET'])
+def download():
+    print('进入下载')
     # 需要知道2个参数, 第1个参数是本地目录的path, 第2个参数是文件名(带扩展名)
-    directory = DOWNLOAD_FOLDER  # 假设在当前目录
-    response = make_response(send_from_directory(
-        directory, filename, as_attachment=True))
-    response.headers["Content-Disposition"] = "attachment; filename={}".format(
-        file_name.encode().decode('latin-1'))
+    directory = "../"+DOWNLOAD_FOLDER  # 假设在当前目录
+    file_name = "c_00002_20190725171953.csv"
+    print(os.path.join(directory, file_name))
+    response = make_response(send_from_directory(directory,file_name.encode('utf-8').decode('utf-8'),as_attachment=True))
     return response
 
 
@@ -186,11 +188,11 @@ def history(id):
                            prev_url=prev_url)
 
 
-@app.route('/uploads/<filename>', methods=['GET', 'POST'])
-def send_file(filename):
-    if current_user.is_authenticated:
-        return send_from_directory("../%s/%s" % (UPLOAD_FOLDER, current_user.id), filename)
-    return send_from_directory("../%s" % UPLOAD_FOLDER, filename)
+# @app.route('/uploads/<filename>', methods=['GET', 'POST'])
+# def send_file(filename):
+#     if current_user.is_authenticated:
+#         return send_from_directory("../%s/%s" % (UPLOAD_FOLDER, current_user.id), filename)
+#     return send_from_directory("../%s" % UPLOAD_FOLDER, filename)
 
 
 @app.route('/logout')

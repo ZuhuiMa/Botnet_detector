@@ -296,7 +296,9 @@
         <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
             <img style="max-width: 1000px; max-height: 1000px;" src="{{ url_for('static', filename='botnet.png') }}" />
         </div>
-
+        <div style="text-align: center">
+            <img id="loading_image" style="display: none" src="{{ url_for('static', filename='loading.gif')}}">
+        </div>
         <form action="/upload" method="post" enctype="multipart/form-data"
             style="margin-top: 30px; width: 100%; text-align: center; margin: auto;" onsubmit="showloading()">
 
@@ -308,16 +310,7 @@
             <div><a class="btn btn-primary"
                     href="https://github.com/WeatherSuperMan/Covid_Test_Images/archive/master.zip"
                     style="margin-top: 20px; text-align: left;color:black;">Download Sample Images</a></div>
-
         </form>
-
-
-
-
-
-        <div style="text-align: center">
-            <img id="loading_image" style="display: none" src="{{ url_for('static', filename='loading.gif')}}">
-        </div>
 
     </section>
 
