@@ -7,4 +7,5 @@ vir-venv/*
 *.egg-info
 dist
 build
-.vscode/
+.vscode/*
+.vscode
