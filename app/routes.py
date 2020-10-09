@@ -146,7 +146,7 @@ def upload_file():
                     predictions.append(1)
                     bot_num += 1
                 else:
-                    predictions.append(1)
+                    predictions.append(0)
             bot_per = round(bot_num/tol_num*100, 5)
             file_names = [ os.path.splitext(file)[0] for file in os.listdir(folder_name)]
             result = pd.DataFrame(
