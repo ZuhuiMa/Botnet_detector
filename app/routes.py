@@ -148,7 +148,7 @@ def upload_file():
                 else:
                     predictions.append(1)
             bot_per = round(bot_num/tol_num*100, 5)
-            file_names = [file.split(".")[0] for file in os.listdir(folder_name)]
+            file_names = [ os.path.splitext(file)[0] for file in os.listdir(folder_name)]
             result = pd.DataFrame(
                 {'session_infomation': file_names, 'is_botnet': predictions})
             save_path = os.path.join(
@@ -159,12 +159,11 @@ def upload_file():
     return render_template('predict.html', file_name=file.filename, bot_num=bot_num, tol_num=tol_num, bot_per=bot_per)
 
 
-@app.route('/download', methods=['POST', 'GET'])
-def download():
+@app.route('/download/<file_name>', methods=['POST', 'GET'])
+def download(file_name):
     print('进入下载')
     # 需要知道2个参数, 第1个参数是本地目录的path, 第2个参数是文件名(带扩展名)
     directory = "../"+DOWNLOAD_FOLDER  # 假设在当前目录
-    file_name = "c_00002_20190725171953.csv"
     print(os.path.join(directory, file_name))
     response = make_response(send_from_directory(directory,file_name.encode('utf-8').decode('utf-8'),as_attachment=True))
     return response

@@ -188,7 +188,7 @@
               >Percentage of Botnet Flows:
               <span style="color: rgb(0, 214, 0)">{{ bot_per }} %</span></b
             >
-            <li><a href="{{ url_for('/download',filename= file_name) }}" methods="GET">{{ file }}</a></li>
+            <li><a href="{{ url_for('download',file_name= file_name.split(".")[0]+".csv") }}" methods="GET">{{ file_name.split(".")[0]+".csv" }}</a></li>
 
           <h4>
 
