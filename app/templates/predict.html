@@ -168,7 +168,7 @@
         >
           Botnet Classification
         </h2>
-        <div style="width: 90%; margin: auto; text-align: center">
+        <div style="font-size: large; width: 90%; margin: auto; text-align: center">
           <p style="font-style: italic">{{ file_name }}</p>
 
           <h3 style="margin-top: 40px; color: white">
@@ -188,10 +188,10 @@
               >Percentage of Botnet Flows:
               <span style="color: rgb(0, 214, 0)">{{ bot_per }} %</span></b
             >
-            <li><a href="{{ url_for('download',file_name= file_name.split(".")[0]+".csv") }}" methods="GET">{{ file_name.split(".")[0]+".csv" }}</a></li>
+            
 
           <h4>
-
+            <a href="{{ url_for('download',file_name= file_name.split(".")[0]+".csv") }}" methods="GET">{{ file_name.split(".")[0]+".csv" }}</a>
           </h4>
           <br />
           <br />
