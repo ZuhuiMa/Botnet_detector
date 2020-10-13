@@ -34,18 +34,18 @@ def allowed_file(filename):
 # flow -> png
 def array_to_img(flow_load, dst_folder, file_name):
     flow_load = np.array((flow_load), dtype='uint8')
-    if flow_load.shape[0] < 1024:
-        num_pad = 1024 - flow_load.shape[0]
+    if flow_load.shape[0] < 1089:
+        num_pad = 1089 - flow_load.shape[0]
         flow_load = np.pad(flow_load, (0, num_pad),
                            'constant', constant_values=(0, 0))
     else:
-        flow_load = flow_load[flow_load.shape[0]-1024:]
-    gratImage = flow_load.reshape(32, 32)
+        flow_load = flow_load[flow_load.shape[0]-1089:]
+    gratImage = flow_load.reshape(33, 33)
     full_path = os.path.join(dst_folder, file_name)
     plt.imsave(full_path, gratImage, cmap='gray')
 
 
-# 输入pcap文件，目标文件夹地址  -> 输出处理后的png文件
+# input pcap file，dst folder path -> output pixel images
 def pcap_to_png(pcap_file, target_folder):
     pcaps = scapy.rdpcap(pcap_file)
     for session_name, session_content in pcaps.sessions().items():  # extract session information
@@ -105,7 +105,7 @@ def upload_file():
         if not allowed_file(file.filename):
             flash('Only pcap files can be uploaded')
             return redirect(url_for('index'))
-        # 如果已登录
+        # if login
         if current_user.is_authenticated:
             full_name = os.path.join(UPLOAD_FOLDER, str(current_user.id))
             if not os.path.exists(full_name):
@@ -123,7 +123,7 @@ def upload_file():
                     user_id=current_user.id)
             db.session.add(ct)
             db.session.commit()
-        # 如果没登陆
+        # Not login
         else:
             full_name = os.path.join(UPLOAD_FOLDER, file.filename)
             file.save(full_name)
