@@ -1,50 +1,30 @@
-0.先创建虚拟环境 
+This web application is based on flask which is a lightweight python library
 
-$ python -m venv venv
+HOW TO USE IT:
 
-1.首先激活虚拟环境，需使用以下命令：
+For UNIX/Linux:
+1. Install python (if you haven't installed it)
+(optinal) Creata a virtaul enviornment for this app
 
-$ source venv/bin/activate
-
-terminal会显示为(venv) $ _
-
-如果你使用的是Microsoft Windows命令提示符窗口，则激活命令稍有不同：
-
-$ venv\Scripts\activate
-
-(venv) $ _
-
-然后根据requirements.txt新建虚拟环境
-
+2. install necessray libraries 
+$ pip3 install -r requirements.txt
+or
 $ pip install -r requirements.txt
 
-
-2.所有包安装完毕后运行flask
-
+3. start the app
 $ flask run
 
-在浏览器内输入localhost:5000即可打开网页
-
-3.配置文件存放在config.py内。
-
-4.flask环境变量存放在.flaskenv中。
-
-5.激活虚拟环境后运行flask shell可以进入交互模式调试。
+Then you can access localhost:5000 and enjoy our app
 
 
-有两个我设置的测试账号：
-
-username: test
-
-email: test@example.com
-
-password: 123
-
----------------------------
-username: test1
-
-email: test1@example.com
-
-password: 123
 
 
+
+For Windows:
+Sorry, I don't know. But you can access our website http://www.botnetdetector.tk/.
+
+
+
+Future work:
+Our website is just a prototype, sign up and sign in function are not finished.
+In our design, the history detection result of a login user should be stored in database and can be downloaded in the future.
